@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="com.example.acronymmeaningapp.presentation.screens.dashboard_fragment.DashboardFragmentViewModel"/>
+        <import type="android.view.View"/>
+        <variable
+            name="viewModel"
+            type="DashboardFragmentViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.screens.dashboard_fragment.DashboardFragment"
+        bind:exceptionMessage="@{viewModel.exceptionMessage}"
+        bind:snackAction="@{viewModel.getAcronymMeanings}"
+        bind:snackActionText="@{@string/retry}">
+
+        <TextView
+            android:id="@+id/tv_AcronymInDashboard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:text="Acronym:"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/gl_TopHorizontalInDashboard"
+            app:layout_constraintLeft_toLeftOf="@id/btn_AcronymMeanings" />
+
+        <EditText
+            android:id="@+id/et_UserAcronymInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="Enter your acronym..."
+            android:text="@={viewModel.userAcronymInput}"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toRightOf="@+id/tv_AcronymInDashboard"
+            app:layout_constraintTop_toBottomOf="@+id/gl_TopHorizontalInDashboard"
+            app:layout_constraintRight_toRightOf="@id/btn_AcronymMeanings" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_LeftVerticalInDashboard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_RightVerticalInDashboard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_TopHorizontalInDashboard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.02" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_BottomHorizontalInDashboard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.95" />
+
+        <Button
+            android:id="@+id/btn_AcronymMeanings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Click to see a List of Meanings"
+            android:onClick="@{() -> viewModel.getAcronymMeanings()}"
+            app:layout_constraintLeft_toRightOf="@id/gl_LeftVerticalInDashboard"
+            app:layout_constraintRight_toLeftOf="@id/gl_RightVerticalInDashboard"
+            app:layout_constraintTop_toBottomOf="@id/et_UserAcronymInput" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_UserAcronymInputMeanings"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="2dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/gl_BottomHorizontalInDashboard"
+            app:layout_constraintLeft_toRightOf="@id/gl_LeftVerticalInDashboard"
+            app:layout_constraintRight_toLeftOf="@id/gl_RightVerticalInDashboard"
+            app:layout_constraintTop_toBottomOf="@id/btn_AcronymMeanings"
+            bind:acronymMeaningsViewState="@{viewModel.acronymMeaningsViewState}"
+            tools:listitem="@layout/acronym_meaning_list_item" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="@{viewModel.loading ? View.VISIBLE : View.GONE }"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
